@@ -1,0 +1,30 @@
+{
+	"name": "SnowflakeTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"TEMP_SCHEMA": {
+				"type": "string"
+			},
+			"TEMP_TABLE": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().TEMP_SCHEMA",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().TEMP_TABLE",
+				"type": "Expression"
+			}
+		}
+	}
+}
