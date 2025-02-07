@@ -67,7 +67,13 @@
 				"inputs": [
 					{
 						"referenceName": "Parquet3",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"filename": {
+								"value": "@variables('myFileName')",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
@@ -75,7 +81,7 @@
 						"referenceName": "SnowflakeTable1",
 						"type": "DatasetReference",
 						"parameters": {
-							"TEMP_SCHEMA": "TEMP_SCEMHA",
+							"TEMP_SCHEMA": "TEMP_SCHEMA",
 							"TEMP_TABLE": "PET_LICENSE_STAGE"
 						}
 					}
@@ -98,7 +104,7 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
-							"recursive": false,
+							"recursive": true,
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -114,21 +120,8 @@
 							"type": "ParquetWriteSettings"
 						}
 					},
-					"enableStaging": true,
-					"validateDataConsistency": true,
-					"logSettings": {
-						"enableCopyActivityLog": true,
-						"copyActivityLogSettings": {
-							"logLevel": "Warning",
-							"enableReliableLogging": false
-						},
-						"logLocationSettings": {
-							"linkedServiceName": {
-								"referenceName": "AzureDataLakeStorage_LS",
-								"type": "LinkedServiceReference"
-							}
-						}
-					},
+					"enableStaging": false,
+					"validateDataConsistency": false,
 					"translator": {
 						"type": "TabularTranslator",
 						"typeConversion": true,
@@ -140,7 +133,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DelimitedText1",
+						"referenceName": "DelimitedText3",
 						"type": "DatasetReference"
 					}
 				],
