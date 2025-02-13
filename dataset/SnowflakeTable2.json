@@ -7,6 +7,10 @@
 		},
 		"annotations": [],
 		"type": "SnowflakeV2Table",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"schema": "NYPD_Arrest_SCHEMA",
+			"table": "NYPD_Arrest_Table"
+		}
 	}
 }
