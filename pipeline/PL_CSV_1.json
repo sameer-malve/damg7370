@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "PL_CSV_1",
 	"properties": {
 		"activities": [
 			{
@@ -26,11 +26,30 @@
 							"type": "DelimitedTextReadSettings"
 						}
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "SnowflakeV2Sink",
+						"importSettings": {
+							"type": "SnowflakeImportCopyCommand"
+						}
+					},
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "BlobSpring2025",
+							"type": "LinkedServiceReference"
+						},
+						"path": "silver"
+					}
 				},
 				"inputs": [
 					{
-						"referenceName": "DelimitedText6",
+						"referenceName": "DelimitedText7",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SnowflakeTable4",
 						"type": "DatasetReference"
 					}
 				]
