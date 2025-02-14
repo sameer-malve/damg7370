@@ -32,7 +32,14 @@
 							"type": "SnowflakeImportCopyCommand"
 						}
 					},
-					"enableStaging": true
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "BlobSpring2025",
+							"type": "LinkedServiceReference"
+						},
+						"path": "staging"
+					}
 				},
 				"inputs": [
 					{
@@ -48,6 +55,12 @@
 				]
 			}
 		],
+		"variables": {
+			"NYPD_Var": {
+				"type": "String",
+				"defaultValue": "NYPD_Output_Data.parquet"
+			}
+		},
 		"annotations": []
 	}
 }
