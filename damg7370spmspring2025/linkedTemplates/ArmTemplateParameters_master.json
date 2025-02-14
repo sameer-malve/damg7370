@@ -8,6 +8,9 @@
 		"Snowflake_password": {
 			"value": ""
 		},
+		"Snowflake_LS_NYPD_password": {
+			"value": ""
+		},
 		"AzureDataLakeStorage_LS_properties_typeProperties_url": {
 			"value": "https://2025spring7370damg.dfs.core.windows.net/"
 		},
@@ -22,6 +25,12 @@
 		},
 		"Snowflake_properties_typeProperties_role": {
 			"value": "TEMP_ROLE"
+		},
+		"Snowflake_LS_NYPD_properties_typeProperties_database": {
+			"value": "CRIME_DATA_DB"
+		},
+		"Snowflake_LS_NYPD_properties_typeProperties_role": {
+			"value": "CRIME_ANALYST_ROLE"
 		},
 		"containerUri": {
 			"value": ""

@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Snowflake'"
 		},
+		"Snowflake_LS_NYPD_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Snowflake_LS_NYPD'"
+		},
 		"AzureDataLakeStorage_LS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://2025spring7370damg.dfs.core.windows.net/"
@@ -30,6 +34,14 @@
 		"Snowflake_properties_typeProperties_role": {
 			"type": "string",
 			"defaultValue": "TEMP_ROLE"
+		},
+		"Snowflake_LS_NYPD_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "CRIME_DATA_DB"
+		},
+		"Snowflake_LS_NYPD_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "CRIME_ANALYST_ROLE"
 		},
 		"containerUri": {
 			"type": "string",
@@ -61,6 +73,9 @@
 					"Snowflake_password": {
 						"value": "[parameters('Snowflake_password')]"
 					},
+					"Snowflake_LS_NYPD_password": {
+						"value": "[parameters('Snowflake_LS_NYPD_password')]"
+					},
 					"AzureDataLakeStorage_LS_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage_LS_properties_typeProperties_url')]"
 					},
@@ -75,10 +90,36 @@
 					},
 					"Snowflake_properties_typeProperties_role": {
 						"value": "[parameters('Snowflake_properties_typeProperties_role')]"
+					},
+					"Snowflake_LS_NYPD_properties_typeProperties_database": {
+						"value": "[parameters('Snowflake_LS_NYPD_properties_typeProperties_database')]"
+					},
+					"Snowflake_LS_NYPD_properties_typeProperties_role": {
+						"value": "[parameters('Snowflake_LS_NYPD_properties_typeProperties_role')]"
 					}
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "damg7370spmspring2025_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'damg7370spmspring2025_ArmTemplate_0')]"
+			]
 		}
 	]
 }
