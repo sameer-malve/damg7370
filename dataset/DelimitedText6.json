@@ -13,7 +13,7 @@
 				"fileName": "NYDP_ALTERYX_OUTPUT.csv",
 				"fileSystem": "bronze"
 			},
-			"columnDelimiter": "\t",
+			"columnDelimiter": ",",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
