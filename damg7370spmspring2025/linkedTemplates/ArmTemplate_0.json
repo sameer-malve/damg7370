@@ -37,11 +37,11 @@
 		},
 		"Snowflake_LS_NYPD_properties_typeProperties_database": {
 			"type": "string",
-			"defaultValue": "CRIME_DATA_DB"
+			"defaultValue": "NYPD_CRIME_DB"
 		},
 		"Snowflake_LS_NYPD_properties_typeProperties_role": {
 			"type": "string",
-			"defaultValue": "CRIME_ANALYST_ROLE"
+			"defaultValue": "NYPD_ADMIN_ROLE"
 		}
 	},
 	"variables": {
@@ -121,9 +121,9 @@
 				"typeProperties": {
 					"authenticationType": "Basic",
 					"accountIdentifier": "dqa73159.east-us-2.azure",
-					"user": "CRIME_USER",
+					"user": "NYPD_DATA_USER",
 					"database": "[parameters('Snowflake_LS_NYPD_properties_typeProperties_database')]",
-					"warehouse": "CRIME_ANALYTICS_WH",
+					"warehouse": "NYPD_ANALYTICS_WH",
 					"role": "[parameters('Snowflake_LS_NYPD_properties_typeProperties_role')]",
 					"password": {
 						"type": "SecureString",
@@ -420,6 +420,34 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText8')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage_LS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "NYDP_ALTERYX_OUTPUT.csv",
+						"fileSystem": "bronze"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage_LS')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Parquet1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -580,27 +608,6 @@
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SnowflakeTable3')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_LS_NYPD",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeV2Table",
-				"schema": [],
-				"typeProperties": {
-					"schema": "PUBLIC_SAFETY_SCHEMA",
-					"table": "NYPD_Arrest_Table"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_LS_NYPD')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SnowflakeTable4')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {

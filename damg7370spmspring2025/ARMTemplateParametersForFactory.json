@@ -27,10 +27,10 @@
 			"value": "TEMP_ROLE"
 		},
 		"Snowflake_LS_NYPD_properties_typeProperties_database": {
-			"value": "CRIME_DATA_DB"
+			"value": "NYPD_CRIME_DB"
 		},
 		"Snowflake_LS_NYPD_properties_typeProperties_role": {
-			"value": "CRIME_ANALYST_ROLE"
+			"value": "NYPD_ADMIN_ROLE"
 		}
 	}
 }

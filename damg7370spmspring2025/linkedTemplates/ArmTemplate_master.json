@@ -37,11 +37,11 @@
 		},
 		"Snowflake_LS_NYPD_properties_typeProperties_database": {
 			"type": "string",
-			"defaultValue": "CRIME_DATA_DB"
+			"defaultValue": "NYPD_CRIME_DB"
 		},
 		"Snowflake_LS_NYPD_properties_typeProperties_role": {
 			"type": "string",
-			"defaultValue": "CRIME_ANALYST_ROLE"
+			"defaultValue": "NYPD_ADMIN_ROLE"
 		},
 		"containerUri": {
 			"type": "string",
