@@ -1,0 +1,16 @@
+{
+	"name": "SnowflakeTable7",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_Pet",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [],
+		"typeProperties": {
+			"schema": "SEATTLE_PET_LICENSE_SCHEMA",
+			"table": "SEATTLE_PET_TABLE"
+		}
+	}
+}
