@@ -24,9 +24,6 @@
 			],
 			"transformations": [
 				{
-					"name": "derivedColumn1"
-				},
-				{
 					"name": "select1"
 				}
 			],
@@ -43,15 +40,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> readTSVfile",
-				"readTSVfile derive(LIC_ISSUE_DATE = toDate(License_Issue_Date, 'MMMM dd yyyy'),",
-				"          Secondary_Breed = iifNull(Secondary_Breed, 'Unknown'),",
-				"          ZIP_Code = lpad(toString(ZIP_Code),5,'0'),",
-				"          Species = upper(Species),",
-				"          License_Number = toInteger(translate(License_Number,'S','')),",
-				"          Animals_Name = translate(Animals_Name,'()[]',''),",
-				"          Load_Date = currentDate(),",
-				"          job_load_Date = currentDate()) ~> derivedColumn1",
-				"derivedColumn1 select(mapColumn(",
+				"readTSVfile select(mapColumn(",
 				"          License_Issue_Date,",
 				"          License_Number,",
 				"          Animals_Name,",
