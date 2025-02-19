@@ -1,8 +1,0 @@
-{
-	"name": "SnowflakeTable5",
-	"properties": {
-		"annotations": [],
-		"type": "SnowflakeV2Table",
-		"schema": []
-	}
-}
