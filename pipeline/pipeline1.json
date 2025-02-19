@@ -15,6 +15,13 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_Clean_Data_From__TSV",
+						"type": "DataFlowReference",
+						"parameters": {
+							"Job_ID_Param": "\"10\""
+						}
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
@@ -25,8 +32,6 @@
 			{
 				"name": "LoadBreedDim",
 				"type": "ExecuteDataFlow",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "CleanPetLicData",
@@ -44,6 +49,13 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataflow": {
+						"referenceName": "Seattle_pet_license_BreedDim_load",
+						"type": "DataFlowReference",
+						"parameters": {
+							"DI_JOB_ID": "\"59\""
+						}
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
@@ -54,8 +66,6 @@
 			{
 				"name": "LoadLocationDim",
 				"type": "ExecuteDataFlow",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "LoadBreedDim",
@@ -73,6 +83,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflowLocationDim",
+						"type": "DataFlowReference"
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
@@ -83,8 +97,6 @@
 			{
 				"name": "LoadFact",
 				"type": "ExecuteDataFlow",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "LoadLocationDim",
@@ -102,6 +114,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataflow": {
+						"referenceName": "df_Fact_Load",
+						"type": "DataFlowReference"
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
