@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "SnowflakeTable_PET",
+						"referenceName": "SnowflakeTable11",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -49,13 +49,10 @@
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
-				"          LICENSE_ISSUE_DATE as string,",
-				"          LICENSE_NUMBER as string,",
-				"          ANIMAL_NAME as string,",
-				"          SPECIES as string,",
-				"          PRIMARY_BREED as string,",
-				"          SECONDARY_BREED as string,",
+				"          LOCATION_SK as string,",
 				"          ZIP_CODE as string,",
+				"          CITY as string,",
+				"          STATE as string,",
 				"          DI_JOB_ID as string,",
 				"          DI_LOAD_DT as string",
 				"     ),",
