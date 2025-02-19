@@ -11,6 +11,9 @@
 		"Snowflake_LS_NYPD_password": {
 			"value": ""
 		},
+		"Snowflake_Pet_password": {
+			"value": ""
+		},
 		"AzureDataLakeStorage_LS_properties_typeProperties_url": {
 			"value": "https://2025spring7370damg.dfs.core.windows.net/"
 		},
@@ -31,6 +34,12 @@
 		},
 		"Snowflake_LS_NYPD_properties_typeProperties_role": {
 			"value": "NYPD_ADMIN_ROLE"
+		},
+		"Snowflake_Pet_properties_typeProperties_database": {
+			"value": "SEATTLE_PET_LICENSE_DB"
+		},
+		"Snowflake_Pet_properties_typeProperties_role": {
+			"value": "SEATTLE_PET_LICENSE_ROLE"
 		},
 		"containerUri": {
 			"value": ""

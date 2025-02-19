@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Snowflake_LS_NYPD'"
 		},
+		"Snowflake_Pet_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Snowflake_Pet'"
+		},
 		"AzureDataLakeStorage_LS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://2025spring7370damg.dfs.core.windows.net/"
@@ -42,6 +46,14 @@
 		"Snowflake_LS_NYPD_properties_typeProperties_role": {
 			"type": "string",
 			"defaultValue": "NYPD_ADMIN_ROLE"
+		},
+		"Snowflake_Pet_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SEATTLE_PET_LICENSE_DB"
+		},
+		"Snowflake_Pet_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "SEATTLE_PET_LICENSE_ROLE"
 		},
 		"containerUri": {
 			"type": "string",
@@ -76,6 +88,9 @@
 					"Snowflake_LS_NYPD_password": {
 						"value": "[parameters('Snowflake_LS_NYPD_password')]"
 					},
+					"Snowflake_Pet_password": {
+						"value": "[parameters('Snowflake_Pet_password')]"
+					},
 					"AzureDataLakeStorage_LS_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage_LS_properties_typeProperties_url')]"
 					},
@@ -96,6 +111,12 @@
 					},
 					"Snowflake_LS_NYPD_properties_typeProperties_role": {
 						"value": "[parameters('Snowflake_LS_NYPD_properties_typeProperties_role')]"
+					},
+					"Snowflake_Pet_properties_typeProperties_database": {
+						"value": "[parameters('Snowflake_Pet_properties_typeProperties_database')]"
+					},
+					"Snowflake_Pet_properties_typeProperties_role": {
+						"value": "[parameters('Snowflake_Pet_properties_typeProperties_role')]"
 					}
 				}
 			},
@@ -119,6 +140,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'damg7370spmspring2025_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "damg7370spmspring2025_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'damg7370spmspring2025_ArmTemplate_1')]"
 			]
 		}
 	]
