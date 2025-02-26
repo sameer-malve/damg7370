@@ -44,7 +44,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "SnowflakeTable_PET_LIC_FCT",
+						"referenceName": "SnowflakeTable12",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -100,12 +100,12 @@
 				"     validateSchema: false,",
 				"     format: 'table') ~> sourceLocDim",
 				"source(output(",
-				"          BREED_SK as string,",
+				"          BREED_SK as decimal(10,0),",
 				"          PRIMARY_BREED_NAME as string,",
 				"          SECONDARY_BREED_NAME as string,",
 				"          SPECIES_NAME as string,",
 				"          DI_JOB_ID as string,",
-				"          DI_LOAD_DT as string",
+				"          DI_LOAD_DT as date",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
@@ -172,7 +172,7 @@
 				"     validateSchema: false,",
 				"     input(",
 				"          PET_LIC_SK as string,",
-				"          DATE_SK as string,",
+				"          DATE_DIM_SK as string,",
 				"          LOCATION_SK as string,",
 				"          BREED_SK as string,",
 				"          DI_JOB_ID as string,",
@@ -189,7 +189,7 @@
 				"     stageInsert: true,",
 				"     mapColumn(",
 				"          PET_LIC_SK,",
-				"          DATE_SK = DATE_DIM_SK,",
+				"          DATE_DIM_SK,",
 				"          LOCATION_SK,",
 				"          BREED_SK,",
 				"          DI_JOB_ID,",
