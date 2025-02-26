@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "Seattle_Pet_Licenses_new.tsv",
+				"fileName": "Seattle_Pet_Licenses_.tsv",
 				"fileSystem": "bronze"
 			},
 			"columnDelimiter": "\t",
