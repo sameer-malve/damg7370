@@ -13,7 +13,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/df_Fact_Load')]",
+			"name": "[concat(parameters('factoryName'), '/DF_Clean_Data_From__TSV')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -22,45 +22,16 @@
 					"sources": [
 						{
 							"dataset": {
-								"referenceName": "SnowflakeTable_PET",
+								"referenceName": "DelimitedText14",
 								"type": "DatasetReference"
 							},
-							"name": "source1"
-						},
-						{
-							"dataset": {
-								"referenceName": "SnowflakeTable_LOC_DIM",
-								"type": "DatasetReference"
-							},
-							"name": "sourceLocDim"
-						},
-						{
-							"dataset": {
-								"referenceName": "SnowflakeTable_Breed",
-								"type": "DatasetReference"
-							},
-							"name": "sourceBreedDim"
-						},
-						{
-							"dataset": {
-								"referenceName": "SnowflakeTable_DATE_DIM",
-								"type": "DatasetReference"
-							},
-							"name": "sourceDateDim"
-						},
-						{
-							"dataset": {
-								"referenceName": "SnowflakeTable_PET_LIC_FCT",
-								"type": "DatasetReference"
-							},
-							"name": "FactMaxID",
-							"description": "Add source dataset"
+							"name": "readTSVfile"
 						}
 					],
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "SnowflakeTable_PET_LIC_FCT",
+								"referenceName": "SnowflakeTable_PET",
 								"type": "DatasetReference"
 							},
 							"name": "sink1"
@@ -68,29 +39,52 @@
 					],
 					"transformations": [
 						{
-							"name": "joinLocDim"
+							"name": "TransposeColumns"
 						},
 						{
-							"name": "joinBreedDim"
-						},
-						{
-							"name": "joinDateDim"
-						},
-						{
-							"name": "surrogateKey1"
-						},
-						{
-							"name": "joinFCT"
-						},
-						{
-							"name": "select1"
-						},
-						{
-							"name": "derivedColumn1"
+							"name": "PickRequiredColumn"
 						}
 					],
 					"scriptLines": [
+						"parameters{",
+						"     Job_ID_Param as string (\"10\")",
+						"}",
 						"source(output(",
+						"          License_Issue_Date as string,",
+						"          License_Number as string,",
+						"          Animals_Name as string,",
+						"          Species as string,",
+						"          Primary_Breed as string,",
+						"          Secondary_Breed as string,",
+						"          ZIP_Code as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> readTSVfile",
+						"readTSVfile derive(LIC_ISSUE_DATE = toDate(License_Issue_Date,'MMMM dd yyyy'),",
+						"          Secondary_Breed = iifNull(Secondary_Breed,'Unknown'),",
+						"          ZIP_Code = lpad(toString(ZIP_Code),5,'0'),",
+						"          Species = upper(Species),",
+						"          LIC_Number = toInteger(translate(License_Number,'S','')),",
+						"          Animals_NAME = translate(Animals_Name,'()',''),",
+						"          Load_Date = currentDate(),",
+						"          {Job_ID } = $Job_ID_Param) ~> TransposeColumns",
+						"TransposeColumns select(mapColumn(",
+						"          Species,",
+						"          Primary_Breed,",
+						"          Secondary_Breed,",
+						"          ZIP_Code,",
+						"          LIC_ISSUE_DATE,",
+						"          LIC_Number,",
+						"          Animals_Name = TransposeColumns@Animals_NAME,",
+						"          Load_Date,",
+						"          {Job_ID }",
+						"     ),",
+						"     skipDuplicateMapInputs: false,",
+						"     skipDuplicateMapOutputs: false) ~> PickRequiredColumn",
+						"PickRequiredColumn sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
 						"          LICENSE_ISSUE_DATE as string,",
 						"          LICENSE_NUMBER as string,",
 						"          ANIMAL_NAME as string,",
@@ -98,99 +92,6 @@
 						"          PRIMARY_BREED as string,",
 						"          SECONDARY_BREED as string,",
 						"          ZIP_CODE as string,",
-						"          DI_JOB_ID as string,",
-						"          DI_LOAD_DT as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     format: 'table') ~> source1",
-						"source(output(",
-						"          LOCATION_SK as string,",
-						"          ZIP_CODE as string,",
-						"          CITY as string,",
-						"          STATE as string,",
-						"          DI_JOB_ID as string,",
-						"          DI_LOAD_DT as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     format: 'table') ~> sourceLocDim",
-						"source(output(",
-						"          BREED_SK as string,",
-						"          PRIMARY_BREED_NAME as string,",
-						"          SECONDARY_BREED_NAME as string,",
-						"          SPECIES_NAME as string,",
-						"          DI_JOB_ID as string,",
-						"          DI_LOAD_DT as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     format: 'table') ~> sourceBreedDim",
-						"source(output(",
-						"          DATE_SK as string,",
-						"          DAY_NAME as string,",
-						"          DAY_ABBR as string,",
-						"          DAY_NUM as string,",
-						"          MONTH_NAME as string,",
-						"          MONTH_NUM as string,",
-						"          QTR_NUM as string,",
-						"          DT as string,",
-						"          YEAR_NUM as string,",
-						"          IS_WEEKEND as string,",
-						"          DI_JOB_ID as string,",
-						"          DI_LOAD_DT as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     format: 'table') ~> sourceDateDim",
-						"source(output(",
-						"          MAX_LIC as decimal(10,0)",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     query: 'SELECT NVL(MAX(PET_LIC_SK),0) AS MAX_LIC FROM SEATTLE_PET_LICENSE_SCHEMA.PET_LIC_FCT',",
-						"     format: 'query') ~> FactMaxID",
-						"source1, sourceLocDim join(source1@ZIP_CODE == sourceLocDim@ZIP_CODE,",
-						"     joinType:'inner',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> joinLocDim",
-						"joinLocDim, sourceBreedDim join(PRIMARY_BREED == PRIMARY_BREED_NAME,",
-						"     joinType:'inner',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> joinBreedDim",
-						"joinBreedDim, sourceDateDim join(source1@DI_LOAD_DT == sourceDateDim@DI_LOAD_DT,",
-						"     joinType:'inner',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> joinDateDim",
-						"select1 keyGenerate(output(ROW_NUM as long),",
-						"     startAt: 1L,",
-						"     stepValue: 1L) ~> surrogateKey1",
-						"joinDateDim, FactMaxID join(1==1,",
-						"     joinType:'cross',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> joinFCT",
-						"joinFCT select(mapColumn(",
-						"          LOCATION_SK,",
-						"          BREED_SK,",
-						"          PET_LIC_SK = MAX_LIC,",
-						"          DATE_SK,",
-						"          DI_JOB_ID = sourceLocDim@DI_JOB_ID,",
-						"          DI_LOAD_DT = sourceLocDim@DI_LOAD_DT",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select1",
-						"surrogateKey1 derive(PET_LIC_SK = PET_LIC_SK + ROW_NUM) ~> derivedColumn1",
-						"derivedColumn1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          PET_LIC_SK as string,",
-						"          DATE_SK as string,",
-						"          LOCATION_SK as string,",
-						"          BREED_SK as string,",
 						"          DI_JOB_ID as string,",
 						"          DI_LOAD_DT as string",
 						"     ),",
@@ -204,12 +105,15 @@
 						"     skipDuplicateMapOutputs: true,",
 						"     stageInsert: true,",
 						"     mapColumn(",
-						"          LOCATION_SK,",
-						"          BREED_SK,",
-						"          PET_LIC_SK,",
-						"          DATE_SK,",
-						"          DI_JOB_ID,",
-						"          DI_LOAD_DT",
+						"          SPECIES = Species,",
+						"          PRIMARY_BREED = Primary_Breed,",
+						"          LICENSE_ISSUE_DATE = LIC_ISSUE_DATE,",
+						"          LICENSE_NUMBER = LIC_Number,",
+						"          ANIMAL_NAME = Animals_Name,",
+						"          SECONDARY_BREED = Secondary_Breed,",
+						"          ZIP_CODE = ZIP_Code,",
+						"          DI_JOB_ID = {Job_ID },",
+						"          DI_LOAD_DT = Load_Date",
 						"     )) ~> sink1"
 					]
 				}
@@ -455,6 +359,210 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/df_Fact_Load')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "SnowflakeTable_PET",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "SnowflakeTable_LOC_DIM",
+								"type": "DatasetReference"
+							},
+							"name": "sourceLocDim"
+						},
+						{
+							"dataset": {
+								"referenceName": "SnowflakeTable_Breed",
+								"type": "DatasetReference"
+							},
+							"name": "sourceBreedDim"
+						},
+						{
+							"dataset": {
+								"referenceName": "SnowflakeTable_DATE_DIM",
+								"type": "DatasetReference"
+							},
+							"name": "sourceDateDim"
+						},
+						{
+							"dataset": {
+								"referenceName": "SnowflakeTable_PET_LIC_FCT",
+								"type": "DatasetReference"
+							},
+							"name": "FactMaxID",
+							"description": "Add source dataset"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SnowflakeTable12",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "joinLocDim"
+						},
+						{
+							"name": "joinBreedDim"
+						},
+						{
+							"name": "joinDateDim"
+						},
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "joinFCT"
+						},
+						{
+							"name": "select1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          LICENSE_ISSUE_DATE as date,",
+						"          LICENSE_NUMBER as string,",
+						"          ANIMAL_NAME as string,",
+						"          SPECIES as string,",
+						"          PRIMARY_BREED as string,",
+						"          SECONDARY_BREED as string,",
+						"          ZIP_CODE as string,",
+						"          DI_JOB_ID as string,",
+						"          DI_LOAD_DT as date",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'table') ~> source1",
+						"source(output(",
+						"          LOCATION_SK as decimal(10,0),",
+						"          ZIP_CODE as string,",
+						"          CITY as string,",
+						"          STATE as string,",
+						"          DI_JOB_ID as string,",
+						"          DI_LOAD_DT as date",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'table') ~> sourceLocDim",
+						"source(output(",
+						"          BREED_SK as decimal(10,0),",
+						"          PRIMARY_BREED_NAME as string,",
+						"          SECONDARY_BREED_NAME as string,",
+						"          SPECIES_NAME as string,",
+						"          DI_JOB_ID as string,",
+						"          DI_LOAD_DT as date",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'table') ~> sourceBreedDim",
+						"source(output(",
+						"          DT as date,",
+						"          ABRV_DAY_NAME as string,",
+						"          MONTH_NAME as string,",
+						"          START_DAY_OF_MONTH as date,",
+						"          END_DAY_OF_MONTH as date,",
+						"          QUARTER_NUM as decimal(2,0),",
+						"          DAY_OF_WEEK as decimal(2,0),",
+						"          IS_WEEKEND as decimal(1,0),",
+						"          YEAR_NUM as decimal(4,0),",
+						"          MONTH_NUM as decimal(2,0),",
+						"          DAY_NUM as decimal(2,0),",
+						"          DATE_DIM_SK as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'table') ~> sourceDateDim",
+						"source(output(",
+						"          MAX_LIC as decimal(10,0)",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     query: 'SELECT NVL(MAX(PET_LIC_SK),0) AS MAX_LIC FROM SEATTLE_PET_LICENSE_SCHEMA.PET_LIC_FCT',",
+						"     format: 'query') ~> FactMaxID",
+						"source1, sourceLocDim join(source1@ZIP_CODE == sourceLocDim@ZIP_CODE,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> joinLocDim",
+						"joinLocDim, sourceBreedDim join(PRIMARY_BREED == PRIMARY_BREED_NAME,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> joinBreedDim",
+						"joinBreedDim, sourceDateDim join(LICENSE_ISSUE_DATE == DT,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> joinDateDim",
+						"select1 keyGenerate(output(ROW_NUM as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"joinDateDim, FactMaxID join(1==1,",
+						"     joinType:'cross',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> joinFCT",
+						"joinFCT select(mapColumn(",
+						"          LOCATION_SK,",
+						"          BREED_SK,",
+						"          PET_LIC_SK = MAX_LIC,",
+						"          DATE_DIM_SK,",
+						"          DI_JOB_ID = sourceLocDim@DI_JOB_ID,",
+						"          DI_LOAD_DT = sourceLocDim@DI_LOAD_DT",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"surrogateKey1 derive(PET_LIC_SK = PET_LIC_SK + ROW_NUM) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          PET_LIC_SK as string,",
+						"          DATE_DIM_SK as string,",
+						"          LOCATION_SK as string,",
+						"          BREED_SK as string,",
+						"          DI_JOB_ID as string,",
+						"          DI_LOAD_DT as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     truncate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     stageInsert: true,",
+						"     mapColumn(",
+						"          PET_LIC_SK,",
+						"          DATE_DIM_SK,",
+						"          LOCATION_SK,",
+						"          BREED_SK,",
+						"          DI_JOB_ID,",
+						"          DI_LOAD_DT",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -463,6 +571,8 @@
 					{
 						"name": "CleanPetLicData",
 						"type": "ExecuteDataFlow",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -495,6 +605,8 @@
 					{
 						"name": "LoadBreedDim",
 						"type": "ExecuteDataFlow",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "CleanPetLicData",
@@ -536,6 +648,8 @@
 					{
 						"name": "LoadLocationDim",
 						"type": "ExecuteDataFlow",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "LoadBreedDim",
@@ -601,7 +715,8 @@
 									"sourceDateDim": {},
 									"FactMaxID": {},
 									"sink1": {}
-								}
+								},
+								"linkedServiceParameters": {}
 							},
 							"staging": {},
 							"compute": {
@@ -629,6 +744,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/DF_Clean_Data_From__TSV')]",
 				"[concat(variables('factoryId'), '/dataflows/Seattle_pet_license_BreedDim_load')]",
 				"[concat(variables('factoryId'), '/dataflows/dataflowLocationDim')]",
 				"[concat(variables('factoryId'), '/dataflows/df_Fact_Load')]"
