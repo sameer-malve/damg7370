@@ -12,5 +12,6 @@
 			"schema": "PUBLIC_SAFETY_SCHEMA",
 			"table": "NYPD_Arrest_Table"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }

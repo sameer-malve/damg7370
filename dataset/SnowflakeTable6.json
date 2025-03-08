@@ -12,5 +12,6 @@
 			"schema": "NYPD_CRIME_SCHEMA",
 			"table": "NYPD_TABLE_ARREST"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }
