@@ -64,8 +64,6 @@
 			{
 				"name": "flow",
 				"type": "ExecuteDataFlow",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "FCT_Invoice_Load",
