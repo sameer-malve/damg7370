@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Snowflake'"
 		},
+		"Snowflake1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Snowflake1'"
+		},
 		"Snowflake_LS_NYPD_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Snowflake_LS_NYPD'"
@@ -18,6 +22,18 @@
 		"Snowflake_Pet_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Snowflake_Pet'"
+		},
+		"SnowflakeCust_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SnowflakeCust'"
+		},
+		"SnowflakeFCT_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SnowflakeFCT'"
+		},
+		"Snowflake_Main_Customer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Snowflake_Main_Customer'"
 		},
 		"AzureDataLakeStorage_LS_properties_typeProperties_url": {
 			"type": "string",
@@ -39,6 +55,18 @@
 			"type": "string",
 			"defaultValue": "TEMP_ROLE"
 		},
+		"Snowflake1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "AUSTIN_DB"
+		},
+		"Snowflake1_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "AUSTIN_ROLE"
+		},
+		"Snowflake1_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "XSCSYOT-WKA64214.snowflakecomputing.com"
+		},
 		"Snowflake_LS_NYPD_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "NYPD_CRIME_DB"
@@ -54,6 +82,30 @@
 		"Snowflake_Pet_properties_typeProperties_role": {
 			"type": "string",
 			"defaultValue": "SEATTLE_PET_LICENSE_ROLE"
+		},
+		"SnowflakeCust_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "CUSTOMER_DB"
+		},
+		"SnowflakeCust_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "CUSTOMER_ROLE"
+		},
+		"SnowflakeCust_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "XSCSYOT-WKA64214.snowflakecomputing.com"
+		},
+		"SnowflakeFCT_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "CUSTOMER_DB"
+		},
+		"SnowflakeFCT_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "CUSTOMER_ROLE"
+		},
+		"SnowflakeFCT_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "XSCSYOT-WKA64214.snowflakecomputing.com"
 		}
 	},
 	"variables": {
@@ -124,6 +176,29 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Snowflake1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SnowflakeV2",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"accountIdentifier": "WKA64214",
+					"user": "AUSTIN_USER",
+					"database": "[parameters('Snowflake1_properties_typeProperties_database')]",
+					"warehouse": "AUSTIN_WH",
+					"role": "[parameters('Snowflake1_properties_typeProperties_role')]",
+					"host": "[parameters('Snowflake1_properties_typeProperties_host')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('Snowflake1_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Snowflake_LS_NYPD')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -163,6 +238,66 @@
 						"type": "SecureString",
 						"value": "[parameters('Snowflake_Pet_password')]"
 					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeCust')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SnowflakeV2",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"accountIdentifier": "WKA64214",
+					"user": "CUSTOMER_USER",
+					"database": "[parameters('SnowflakeCust_properties_typeProperties_database')]",
+					"warehouse": "CUSTOMER_WH",
+					"role": "[parameters('SnowflakeCust_properties_typeProperties_role')]",
+					"host": "[parameters('SnowflakeCust_properties_typeProperties_host')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SnowflakeCust_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeFCT')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SnowflakeV2",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"accountIdentifier": "WKA64214",
+					"user": "CUSTOMER_USER",
+					"database": "[parameters('SnowflakeFCT_properties_typeProperties_database')]",
+					"warehouse": "CUSTOMER_WH",
+					"role": "[parameters('SnowflakeFCT_properties_typeProperties_role')]",
+					"host": "[parameters('SnowflakeFCT_properties_typeProperties_host')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SnowflakeFCT_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Snowflake_Main_Customer')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Snowflake",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"connectionString": "[parameters('Snowflake_Main_Customer_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -550,135 +685,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage_LS')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedText8')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureDataLakeStorage_LS",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "NYDP_ALTERYX_OUTPUT.csv",
-						"fileSystem": "bronze"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage_LS')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedText_Geo')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureDataLakeStorage_LS",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "geo-data.csv",
-						"fileSystem": "bronze"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "state_fips",
-						"type": "String"
-					},
-					{
-						"name": "state",
-						"type": "String"
-					},
-					{
-						"name": "state_abbr",
-						"type": "String"
-					},
-					{
-						"name": "zipcode",
-						"type": "String"
-					},
-					{
-						"name": "county",
-						"type": "String"
-					},
-					{
-						"name": "city",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage_LS')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Parquet1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "BlobSpring2025",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "staging"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BlobSpring2025')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Parquet2')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "BlobSpring2025",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "staging"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BlobSpring2025')]"
 			]
 		}
 	]

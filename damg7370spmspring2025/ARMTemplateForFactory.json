@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Snowflake'"
 		},
+		"Snowflake1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Snowflake1'"
+		},
 		"Snowflake_LS_NYPD_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Snowflake_LS_NYPD'"
@@ -18,6 +22,18 @@
 		"Snowflake_Pet_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Snowflake_Pet'"
+		},
+		"SnowflakeCust_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SnowflakeCust'"
+		},
+		"SnowflakeFCT_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SnowflakeFCT'"
+		},
+		"Snowflake_Main_Customer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Snowflake_Main_Customer'"
 		},
 		"AzureDataLakeStorage_LS_properties_typeProperties_url": {
 			"type": "string",
@@ -39,6 +55,18 @@
 			"type": "string",
 			"defaultValue": "TEMP_ROLE"
 		},
+		"Snowflake1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "AUSTIN_DB"
+		},
+		"Snowflake1_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "AUSTIN_ROLE"
+		},
+		"Snowflake1_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "XSCSYOT-WKA64214.snowflakecomputing.com"
+		},
 		"Snowflake_LS_NYPD_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "NYPD_CRIME_DB"
@@ -54,6 +82,30 @@
 		"Snowflake_Pet_properties_typeProperties_role": {
 			"type": "string",
 			"defaultValue": "SEATTLE_PET_LICENSE_ROLE"
+		},
+		"SnowflakeCust_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "CUSTOMER_DB"
+		},
+		"SnowflakeCust_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "CUSTOMER_ROLE"
+		},
+		"SnowflakeCust_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "XSCSYOT-WKA64214.snowflakecomputing.com"
+		},
+		"SnowflakeFCT_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "CUSTOMER_DB"
+		},
+		"SnowflakeFCT_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "CUSTOMER_ROLE"
+		},
+		"SnowflakeFCT_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "XSCSYOT-WKA64214.snowflakecomputing.com"
 		}
 	},
 	"variables": {
@@ -339,7 +391,8 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2025-02-26T05:50:40Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DelimitedText8')]",
@@ -512,7 +565,8 @@
 						"defaultValue": "pet_lic_data.parquet"
 					}
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2025-02-07T05:46:21Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Parquet3')]",
@@ -674,8 +728,7 @@
 									"sourceDateDim": {},
 									"FactMaxID": {},
 									"sink1": {}
-								},
-								"linkedServiceParameters": {}
+								}
 							},
 							"staging": {},
 							"compute": {
@@ -700,7 +753,8 @@
 						"type": "string"
 					}
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2025-02-26T05:50:41Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/DF_Clean_Data_From__TSV')]",
@@ -1410,6 +1464,60 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeTable12')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_Pet",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeV2Table",
+				"schema": [
+					{
+						"name": "PET_LIC_SK",
+						"type": "NUMBER",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "DATE_DIM_SK",
+						"type": "NUMBER",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "LOCATION_SK",
+						"type": "NUMBER",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "BREED_SK",
+						"type": "NUMBER",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "DI_JOB_ID",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "DI_LOAD_DT",
+						"type": "DATE"
+					}
+				],
+				"typeProperties": {
+					"schema": "SEATTLE_PET_LICENSE_SCHEMA",
+					"table": "PET_LIC_FCT"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_Pet')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SnowflakeTable2')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1984,6 +2092,29 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Snowflake1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SnowflakeV2",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"accountIdentifier": "WKA64214",
+					"user": "AUSTIN_USER",
+					"database": "[parameters('Snowflake1_properties_typeProperties_database')]",
+					"warehouse": "AUSTIN_WH",
+					"role": "[parameters('Snowflake1_properties_typeProperties_role')]",
+					"host": "[parameters('Snowflake1_properties_typeProperties_host')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('Snowflake1_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Snowflake_LS_NYPD')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -2100,7 +2231,7 @@
 						"PickRequiredColumn sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
-						"          LICENSE_ISSUE_DATE as string,",
+						"          LICENSE_ISSUE_DATE as date,",
 						"          LICENSE_NUMBER as string,",
 						"          ANIMAL_NAME as string,",
 						"          SPECIES as string,",
@@ -2108,7 +2239,7 @@
 						"          SECONDARY_BREED as string,",
 						"          ZIP_CODE as string,",
 						"          DI_JOB_ID as string,",
-						"          DI_LOAD_DT as string",
+						"          DI_LOAD_DT as date",
 						"     ),",
 						"     deletable:false,",
 						"     insertable:true,",
@@ -2269,12 +2400,12 @@
 						"DerivedColumns sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
-						"          BREED_SK as string,",
+						"          BREED_SK as decimal(10,0),",
 						"          PRIMARY_BREED_NAME as string,",
 						"          SECONDARY_BREED_NAME as string,",
 						"          SPECIES_NAME as string,",
 						"          DI_JOB_ID as string,",
-						"          DI_LOAD_DT as string",
+						"          DI_LOAD_DT as date",
 						"     ),",
 						"     deletable:false,",
 						"     insertable:true,",
@@ -2352,12 +2483,12 @@
 						"derivedColumn1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
-						"          LOCATION_SK as string,",
+						"          LOCATION_SK as decimal(10,0),",
 						"          ZIP_CODE as string,",
 						"          CITY as string,",
 						"          STATE as string,",
 						"          DI_JOB_ID as string,",
-						"          DI_LOAD_DT as string",
+						"          DI_LOAD_DT as date",
 						"     ),",
 						"     deletable:false,",
 						"     insertable:true,",
@@ -2558,12 +2689,12 @@
 						"derivedColumn1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
-						"          PET_LIC_SK as string,",
-						"          DATE_DIM_SK as string,",
-						"          LOCATION_SK as string,",
-						"          BREED_SK as string,",
+						"          PET_LIC_SK as decimal(10,0),",
+						"          DATE_DIM_SK as decimal(10,0),",
+						"          LOCATION_SK as decimal(10,0),",
+						"          BREED_SK as decimal(10,0),",
 						"          DI_JOB_ID as string,",
-						"          DI_LOAD_DT as string",
+						"          DI_LOAD_DT as date",
 						"     ),",
 						"     deletable:false,",
 						"     insertable:true,",
@@ -2595,57 +2726,881 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SnowflakeTable12')]",
+			"name": "[concat(parameters('factoryName'), '/DIM_Customer1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Cust1",
+								"type": "DatasetReference"
+							},
+							"name": "DimCustomer1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SnowflakeTable14",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          customerid as string,",
+						"          CustomerName as string,",
+						"          billTo as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> DimCustomer1",
+						"DimCustomer1 keyGenerate(output(customer_sk as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(DI_CreatedDt = currentDate(),",
+						"          pid = \"0\") ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          CUSTOMER_SK as decimal(38,0),",
+						"          CUSTOMER_ID as decimal(38,0),",
+						"          CUSTOMER_NAME as string,",
+						"          BILLTO as string,",
+						"          DI_CREATEDDT as timestamp,",
+						"          PID as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     stageInsert: true,",
+						"     mapColumn(",
+						"          CUSTOMER_SK = customer_sk,",
+						"          CUSTOMER_ID = customerid,",
+						"          CUSTOMER_NAME = CustomerName,",
+						"          BILLTO = billTo,",
+						"          DI_CREATEDDT = DI_CreatedDt,",
+						"          PID = pid",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Cust1')]",
+				"[concat(variables('factoryId'), '/datasets/SnowflakeTable14')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Cust1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "Snowflake_Pet",
+					"referenceName": "AzureDataLakeStorage_LS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "customer_data_part1.csv",
+						"fileSystem": "bronze"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "customerid",
+						"type": "String"
+					},
+					{
+						"name": "CustomerName",
+						"type": "String"
+					},
+					{
+						"name": "billTo",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage_LS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeCust')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SnowflakeV2",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"accountIdentifier": "WKA64214",
+					"user": "CUSTOMER_USER",
+					"database": "[parameters('SnowflakeCust_properties_typeProperties_database')]",
+					"warehouse": "CUSTOMER_WH",
+					"role": "[parameters('SnowflakeCust_properties_typeProperties_role')]",
+					"host": "[parameters('SnowflakeCust_properties_typeProperties_host')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SnowflakeCust_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeTableCustomer')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SnowflakeCust",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
 				"type": "SnowflakeV2Table",
 				"schema": [
 					{
-						"name": "PET_LIC_SK",
+						"name": "CUSTOMER_SK",
 						"type": "NUMBER",
-						"precision": 10,
+						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "DATE_DIM_SK",
+						"name": "CUSTOMER_ID",
 						"type": "NUMBER",
-						"precision": 10,
+						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "LOCATION_SK",
-						"type": "NUMBER",
-						"precision": 10,
-						"scale": 0
-					},
-					{
-						"name": "BREED_SK",
-						"type": "NUMBER",
-						"precision": 10,
-						"scale": 0
-					},
-					{
-						"name": "DI_JOB_ID",
+						"name": "CUSTOMER_NAME",
 						"type": "VARCHAR"
 					},
 					{
-						"name": "DI_LOAD_DT",
-						"type": "DATE"
+						"name": "BILLTO",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "DI_CREATEDDT",
+						"type": "TIMESTAMP_NTZ"
+					},
+					{
+						"name": "PID",
+						"type": "VARCHAR"
 					}
 				],
 				"typeProperties": {
-					"schema": "SEATTLE_PET_LICENSE_SCHEMA",
-					"table": "PET_LIC_FCT"
+					"schema": "CUSTOMER_SCHEMA",
+					"table": "FCT_INVOICE"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_Pet')]"
+				"[concat(variables('factoryId'), '/linkedServices/SnowflakeCust')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DIM_Customer2')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Customer2",
+								"type": "DatasetReference"
+							},
+							"name": "DIMCustomer2"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SnowflakeTable15",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "alterRow1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          customerid as string,",
+						"          CustomerName as string,",
+						"          billTo as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> DIMCustomer2",
+						"DIMCustomer2 keyGenerate(output(customer_sk as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(DI_CreatedDt = currentDate(),",
+						"          pid = \"0\") ~> derivedColumn1",
+						"derivedColumn1 alterRow(upsertIf(!isNull(customerid))) ~> alterRow1",
+						"alterRow1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          CUSTOMER_SK as decimal(38,0),",
+						"          CUSTOMER_ID as decimal(38,0),",
+						"          CUSTOMER_NAME as string,",
+						"          BILLTO as string,",
+						"          DI_CREATEDDT as timestamp,",
+						"          PID as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:true,",
+						"     upsertable:true,",
+						"     keys:['CUSTOMER_ID'],",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     stageInsert: true,",
+						"     mapColumn(",
+						"          CUSTOMER_SK = customer_sk,",
+						"          CUSTOMER_ID = customerid,",
+						"          CUSTOMER_NAME = CustomerName,",
+						"          BILLTO = billTo,",
+						"          DI_CREATEDDT = DI_CreatedDt,",
+						"          PID = pid",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Customer2')]",
+				"[concat(variables('factoryId'), '/datasets/SnowflakeTable15')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Customer2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage_LS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "customer_data_part2.csv",
+						"fileSystem": "bronze"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "customerid",
+						"type": "String"
+					},
+					{
+						"name": "CustomerName",
+						"type": "String"
+					},
+					{
+						"name": "billTo",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage_LS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FCT_Custommer')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Sales_Data_Cust",
+								"type": "DatasetReference"
+							},
+							"name": "FactCustomer"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SnowflakeTable13",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          invoiceId as string,",
+						"          customerid as string,",
+						"          invoiceDate as string,",
+						"          ShipTo as string,",
+						"          ShipTo_City as string,",
+						"          ShipTo_Country as string,",
+						"          SalespersonPersonID as short,",
+						"          SalespersonName as string,",
+						"          total_product_cnt as string,",
+						"          Total as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> FactCustomer",
+						"FactCustomer keyGenerate(output(invoice_sk as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(DI_CreatedDt = currentDate(),",
+						"          pid = \"0\") ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          CUSTOMER_SK as decimal(38,0),",
+						"          CUSTOMER_ID as decimal(38,0),",
+						"          CUSTOMER_NAME as string,",
+						"          BILLTO as string,",
+						"          DI_CREATEDDT as timestamp,",
+						"          PID as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     stageInsert: true,",
+						"     mapColumn(",
+						"          INVOICE_SK = invoice_sk,",
+						"          INVOICE_ID = invoiceId,",
+						"          CUSTOMER_ID = customerid,",
+						"          INVOICE_DT = invoiceDate,",
+						"          TOTAL_PRODUCT_CNT = total_product_cnt,",
+						"          TOTAL_PRODUCT_COST = Total,",
+						"          DI_CREATEDDT = DI_CreatedDt,",
+						"          PID = pid",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Sales_Data_Cust')]",
+				"[concat(variables('factoryId'), '/datasets/SnowflakeTable13')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Sales_Data_Cust')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage_LS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "sales_data.csv",
+						"fileSystem": "bronze"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "invoiceId",
+						"type": "String"
+					},
+					{
+						"name": "customerid",
+						"type": "String"
+					},
+					{
+						"name": "invoiceDate",
+						"type": "String"
+					},
+					{
+						"name": "ShipTo",
+						"type": "String"
+					},
+					{
+						"name": "ShipTo_City",
+						"type": "String"
+					},
+					{
+						"name": "ShipTo_Country",
+						"type": "String"
+					},
+					{
+						"name": "SalespersonPersonID",
+						"type": "String"
+					},
+					{
+						"name": "SalespersonName",
+						"type": "String"
+					},
+					{
+						"name": "total_product_cnt",
+						"type": "String"
+					},
+					{
+						"name": "Total",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage_LS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeFCT')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SnowflakeV2",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"accountIdentifier": "WKA64214",
+					"user": "CUSTOMER_USER",
+					"database": "[parameters('SnowflakeFCT_properties_typeProperties_database')]",
+					"warehouse": "CUSTOMER_WH",
+					"role": "[parameters('SnowflakeFCT_properties_typeProperties_role')]",
+					"host": "[parameters('SnowflakeFCT_properties_typeProperties_host')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SnowflakeFCT_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeTableFCT')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SnowflakeFCT",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeV2Table",
+				"schema": [
+					{
+						"name": "INVOICE_SK",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "INVOICE_ID",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "CUSTOMER_ID",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "INVOICE_DT",
+						"type": "DATE"
+					},
+					{
+						"name": "TOTAL_PRODUCT_CNT",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "TOTAL_PRODUCT_COST",
+						"type": "FLOAT"
+					},
+					{
+						"name": "DI_CREATEDDT",
+						"type": "TIMESTAMP_NTZ"
+					},
+					{
+						"name": "PID",
+						"type": "VARCHAR"
+					}
+				],
+				"typeProperties": {
+					"schema": "CUSTOMER_SCHEMA",
+					"table": "FCT_INVOICE"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SnowflakeFCT')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_Customer')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "DIM_LOAD_CUST",
+						"type": "ExecuteDataFlow",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.00:30:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DIM_Customer1",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"DimCustomer1": {},
+									"sink1": {}
+								},
+								"linkedServiceParameters": {}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "FCT_Invoice_Load",
+						"type": "ExecuteDataFlow",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [
+							{
+								"activity": "DIM_LOAD_CUST",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.00:30:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "FCT_Custommer",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"FactCustomer": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "flow",
+						"type": "ExecuteDataFlow",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [
+							{
+								"activity": "FCT_Invoice_Load",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.00:30:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DIM_Customer2",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"DIMCustomer2": {},
+									"sink1": {}
+								},
+								"linkedServiceParameters": {}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/DIM_Customer1')]",
+				"[concat(variables('factoryId'), '/dataflows/FCT_Custommer')]",
+				"[concat(variables('factoryId'), '/dataflows/DIM_Customer2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Snowflake_Main_Customer')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Snowflake",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"connectionString": "[parameters('Snowflake_Main_Customer_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeTable13')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_Main_Customer",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeTable",
+				"schema": [
+					{
+						"name": "CUSTOMER_SK",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "CUSTOMER_ID",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "CUSTOMER_NAME",
+						"type": "VARCHAR",
+						"scale": 0
+					},
+					{
+						"name": "BILLTO",
+						"type": "VARCHAR",
+						"scale": 0
+					},
+					{
+						"name": "DI_CREATEDDT",
+						"type": "TIMESTAMP_NTZ",
+						"precision": 29,
+						"scale": 9
+					},
+					{
+						"name": "PID",
+						"type": "VARCHAR",
+						"precision": 10,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "CUSTOMER_SCHEMA",
+					"table": "FCT_INVOICE"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_Main_Customer')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeTable14')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_Main_Customer",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeTable",
+				"schema": [
+					{
+						"name": "CUSTOMER_SK",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "CUSTOMER_ID",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "CUSTOMER_NAME",
+						"type": "VARCHAR",
+						"scale": 0
+					},
+					{
+						"name": "BILLTO",
+						"type": "VARCHAR",
+						"scale": 0
+					},
+					{
+						"name": "DI_CREATEDDT",
+						"type": "TIMESTAMP_NTZ",
+						"precision": 29,
+						"scale": 9
+					},
+					{
+						"name": "PID",
+						"type": "VARCHAR",
+						"precision": 10,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "CUSTOMER_SCHEMA",
+					"table": "DIM_CUSTOMER"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_Main_Customer')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeTable15')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_Main_Customer",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeTable",
+				"schema": [
+					{
+						"name": "CUSTOMER_SK",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "CUSTOMER_ID",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "CUSTOMER_NAME",
+						"type": "VARCHAR",
+						"scale": 0
+					},
+					{
+						"name": "BILLTO",
+						"type": "VARCHAR",
+						"scale": 0
+					},
+					{
+						"name": "DI_CREATEDDT",
+						"type": "TIMESTAMP_NTZ",
+						"precision": 29,
+						"scale": 9
+					},
+					{
+						"name": "PID",
+						"type": "VARCHAR",
+						"precision": 10,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "CUSTOMER_SCHEMA",
+					"table": "DIM_CUSTOMER"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_Main_Customer')]"
 			]
 		}
 	]

@@ -8,10 +8,22 @@
 		"Snowflake_password": {
 			"value": ""
 		},
+		"Snowflake1_password": {
+			"value": ""
+		},
 		"Snowflake_LS_NYPD_password": {
 			"value": ""
 		},
 		"Snowflake_Pet_password": {
+			"value": ""
+		},
+		"SnowflakeCust_password": {
+			"value": ""
+		},
+		"SnowflakeFCT_password": {
+			"value": ""
+		},
+		"Snowflake_Main_Customer_connectionString": {
 			"value": ""
 		},
 		"AzureDataLakeStorage_LS_properties_typeProperties_url": {
@@ -29,6 +41,15 @@
 		"Snowflake_properties_typeProperties_role": {
 			"value": "TEMP_ROLE"
 		},
+		"Snowflake1_properties_typeProperties_database": {
+			"value": "AUSTIN_DB"
+		},
+		"Snowflake1_properties_typeProperties_role": {
+			"value": "AUSTIN_ROLE"
+		},
+		"Snowflake1_properties_typeProperties_host": {
+			"value": "XSCSYOT-WKA64214.snowflakecomputing.com"
+		},
 		"Snowflake_LS_NYPD_properties_typeProperties_database": {
 			"value": "NYPD_CRIME_DB"
 		},
@@ -40,6 +61,24 @@
 		},
 		"Snowflake_Pet_properties_typeProperties_role": {
 			"value": "SEATTLE_PET_LICENSE_ROLE"
+		},
+		"SnowflakeCust_properties_typeProperties_database": {
+			"value": "CUSTOMER_DB"
+		},
+		"SnowflakeCust_properties_typeProperties_role": {
+			"value": "CUSTOMER_ROLE"
+		},
+		"SnowflakeCust_properties_typeProperties_host": {
+			"value": "XSCSYOT-WKA64214.snowflakecomputing.com"
+		},
+		"SnowflakeFCT_properties_typeProperties_database": {
+			"value": "CUSTOMER_DB"
+		},
+		"SnowflakeFCT_properties_typeProperties_role": {
+			"value": "CUSTOMER_ROLE"
+		},
+		"SnowflakeFCT_properties_typeProperties_host": {
+			"value": "XSCSYOT-WKA64214.snowflakecomputing.com"
 		}
 	}
 }

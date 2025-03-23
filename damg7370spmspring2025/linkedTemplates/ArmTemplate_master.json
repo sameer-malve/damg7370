@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Snowflake'"
 		},
+		"Snowflake1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Snowflake1'"
+		},
 		"Snowflake_LS_NYPD_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Snowflake_LS_NYPD'"
@@ -18,6 +22,18 @@
 		"Snowflake_Pet_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Snowflake_Pet'"
+		},
+		"SnowflakeCust_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SnowflakeCust'"
+		},
+		"SnowflakeFCT_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SnowflakeFCT'"
+		},
+		"Snowflake_Main_Customer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Snowflake_Main_Customer'"
 		},
 		"AzureDataLakeStorage_LS_properties_typeProperties_url": {
 			"type": "string",
@@ -39,6 +55,18 @@
 			"type": "string",
 			"defaultValue": "TEMP_ROLE"
 		},
+		"Snowflake1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "AUSTIN_DB"
+		},
+		"Snowflake1_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "AUSTIN_ROLE"
+		},
+		"Snowflake1_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "XSCSYOT-WKA64214.snowflakecomputing.com"
+		},
 		"Snowflake_LS_NYPD_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "NYPD_CRIME_DB"
@@ -54,6 +82,30 @@
 		"Snowflake_Pet_properties_typeProperties_role": {
 			"type": "string",
 			"defaultValue": "SEATTLE_PET_LICENSE_ROLE"
+		},
+		"SnowflakeCust_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "CUSTOMER_DB"
+		},
+		"SnowflakeCust_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "CUSTOMER_ROLE"
+		},
+		"SnowflakeCust_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "XSCSYOT-WKA64214.snowflakecomputing.com"
+		},
+		"SnowflakeFCT_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "CUSTOMER_DB"
+		},
+		"SnowflakeFCT_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "CUSTOMER_ROLE"
+		},
+		"SnowflakeFCT_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "XSCSYOT-WKA64214.snowflakecomputing.com"
 		},
 		"containerUri": {
 			"type": "string",
@@ -85,11 +137,23 @@
 					"Snowflake_password": {
 						"value": "[parameters('Snowflake_password')]"
 					},
+					"Snowflake1_password": {
+						"value": "[parameters('Snowflake1_password')]"
+					},
 					"Snowflake_LS_NYPD_password": {
 						"value": "[parameters('Snowflake_LS_NYPD_password')]"
 					},
 					"Snowflake_Pet_password": {
 						"value": "[parameters('Snowflake_Pet_password')]"
+					},
+					"SnowflakeCust_password": {
+						"value": "[parameters('SnowflakeCust_password')]"
+					},
+					"SnowflakeFCT_password": {
+						"value": "[parameters('SnowflakeFCT_password')]"
+					},
+					"Snowflake_Main_Customer_connectionString": {
+						"value": "[parameters('Snowflake_Main_Customer_connectionString')]"
 					},
 					"AzureDataLakeStorage_LS_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage_LS_properties_typeProperties_url')]"
@@ -106,6 +170,15 @@
 					"Snowflake_properties_typeProperties_role": {
 						"value": "[parameters('Snowflake_properties_typeProperties_role')]"
 					},
+					"Snowflake1_properties_typeProperties_database": {
+						"value": "[parameters('Snowflake1_properties_typeProperties_database')]"
+					},
+					"Snowflake1_properties_typeProperties_role": {
+						"value": "[parameters('Snowflake1_properties_typeProperties_role')]"
+					},
+					"Snowflake1_properties_typeProperties_host": {
+						"value": "[parameters('Snowflake1_properties_typeProperties_host')]"
+					},
 					"Snowflake_LS_NYPD_properties_typeProperties_database": {
 						"value": "[parameters('Snowflake_LS_NYPD_properties_typeProperties_database')]"
 					},
@@ -117,6 +190,24 @@
 					},
 					"Snowflake_Pet_properties_typeProperties_role": {
 						"value": "[parameters('Snowflake_Pet_properties_typeProperties_role')]"
+					},
+					"SnowflakeCust_properties_typeProperties_database": {
+						"value": "[parameters('SnowflakeCust_properties_typeProperties_database')]"
+					},
+					"SnowflakeCust_properties_typeProperties_role": {
+						"value": "[parameters('SnowflakeCust_properties_typeProperties_role')]"
+					},
+					"SnowflakeCust_properties_typeProperties_host": {
+						"value": "[parameters('SnowflakeCust_properties_typeProperties_host')]"
+					},
+					"SnowflakeFCT_properties_typeProperties_database": {
+						"value": "[parameters('SnowflakeFCT_properties_typeProperties_database')]"
+					},
+					"SnowflakeFCT_properties_typeProperties_role": {
+						"value": "[parameters('SnowflakeFCT_properties_typeProperties_role')]"
+					},
+					"SnowflakeFCT_properties_typeProperties_host": {
+						"value": "[parameters('SnowflakeFCT_properties_typeProperties_host')]"
 					}
 				}
 			},
@@ -160,6 +251,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'damg7370spmspring2025_ArmTemplate_1')]"
+			]
+		},
+		{
+			"name": "damg7370spmspring2025_ArmTemplate_3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'damg7370spmspring2025_ArmTemplate_2')]"
 			]
 		}
 	]
