@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "SnowflakeTableCustomer",
+						"referenceName": "SnowflakeTable14",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -31,7 +31,7 @@
 			],
 			"scriptLines": [
 				"source(output(",
-				"          customerid as short,",
+				"          customerid as string,",
 				"          CustomerName as string,",
 				"          billTo as string",
 				"     ),",

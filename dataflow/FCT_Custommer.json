@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "SnowflakeTableFCT",
+						"referenceName": "SnowflakeTable13",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -53,12 +53,10 @@
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
-				"          INVOICE_SK as decimal(38,0),",
-				"          INVOICE_ID as decimal(38,0),",
+				"          CUSTOMER_SK as decimal(38,0),",
 				"          CUSTOMER_ID as decimal(38,0),",
-				"          INVOICE_DT as date,",
-				"          TOTAL_PRODUCT_CNT as decimal(38,0),",
-				"          TOTAL_PRODUCT_COST as double,",
+				"          CUSTOMER_NAME as string,",
+				"          BILLTO as string,",
 				"          DI_CREATEDDT as timestamp,",
 				"          PID as string",
 				"     ),",
