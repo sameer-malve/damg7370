@@ -1,15 +1,21 @@
 {
-	"name": "SnowflakeTableCustomer",
+	"name": "SnowflakeTableFCT",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SnowflakeCust",
+			"referenceName": "SnowflakeFCT",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "SnowflakeV2Table",
 		"schema": [
 			{
-				"name": "CUSTOMER_SK",
+				"name": "INVOICE_SK",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "INVOICE_ID",
 				"type": "NUMBER",
 				"precision": 38,
 				"scale": 0
@@ -21,12 +27,18 @@
 				"scale": 0
 			},
 			{
-				"name": "CUSTOMER_NAME",
-				"type": "VARCHAR"
+				"name": "INVOICE_DT",
+				"type": "DATE"
 			},
 			{
-				"name": "BILLTO",
-				"type": "VARCHAR"
+				"name": "TOTAL_PRODUCT_CNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "TOTAL_PRODUCT_COST",
+				"type": "FLOAT"
 			},
 			{
 				"name": "DI_CREATEDDT",
